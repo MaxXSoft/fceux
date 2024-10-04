@@ -56,10 +56,6 @@
 #include "../../profiler.h"
 #include "../../version.h"
 
-#ifdef _S9XLUA_H
-#include "../../fceulua.h"
-#endif
-
 #include "common/os_utils.h"
 #include "common/configSys.h"
 #include "utils/timeStamp.h"
@@ -1104,35 +1100,6 @@ int  fceuWrapperInit( int argc, char *argv[] )
     } else {
         periodic_saves = 0;
     }
-	
-#ifdef _S9XLUA_H
-	// load lua script if option passed
-	g_config->getOption("SDL.LuaScript", &s);
-	g_config->setOption("SDL.LuaScript", "");
-	if (s.size() > 0)
-	{
-		QFileInfo fi( s.c_str() );
-
-		// Resolve absolute path to file
-		if ( fi.exists() )
-		{
-			//printf("FI: '%s'\n", fi.absoluteFilePath().toStdString().c_str() );
-			//printf("FI: '%s'\n", fi.canonicalFilePath().toStdString().c_str() );
-			s = fi.canonicalFilePath().toStdString();
-		}
-//#if defined(__linux__) || defined(__APPLE__) || defined(__unix__)
-//
-//		// Resolve absolute path to file
-//		char fullpath[2048];
-//		if ( realpath( s.c_str(), fullpath ) != NULL )
-//		{
-//			printf("Fullpath: '%s'\n", fullpath );
-//			s.assign( fullpath );
-//		}
-//#endif
-		FCEU_LoadLuaCode(s.c_str());
-	}
-#endif
 	
 	g_config->getOption("SDL.NewPPU", &newppu);
 	g_config->getOption("SDL.Frameskip", &frameskip);

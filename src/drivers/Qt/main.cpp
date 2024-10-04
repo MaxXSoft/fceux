@@ -22,6 +22,7 @@
 #include <QApplication>
 #include <QSplashScreen>
 #include <QSettings>
+#include <QFileInfo>
 //#include <QProxyStyle>
 
 #include "Qt/ConsoleWindow.h"
@@ -30,6 +31,10 @@
 
 #ifdef WIN32
 #include <QtPlatformHeaders/QWindowsWindowFunctions>
+#endif
+
+#ifdef _S9XLUA_H
+#include "../../fceulua.h"
 #endif
 
 consoleWin_t *consoleWindow = NULL;
@@ -166,6 +171,38 @@ int main( int argc, char *argv[] )
 		splash->finish( consoleWindow );
 		//delete splash; this is handled by Qt event loop
 	}
+
+#ifdef _S9XLUA_H
+	// load lua script if option passed
+	std::string s;
+	g_config->getOption("SDL.LuaScript", &s);
+	g_config->setOption("SDL.LuaScript", "");
+	if (s.size() > 0)
+	{
+		QFileInfo fi( s.c_str() );
+
+		// Resolve absolute path to file
+		if ( fi.exists() )
+		{
+			//printf("FI: '%s'\n", fi.absoluteFilePath().toStdString().c_str() );
+			//printf("FI: '%s'\n", fi.canonicalFilePath().toStdString().c_str() );
+			s = fi.canonicalFilePath().toStdString();
+		}
+//#if defined(__linux__) || defined(__APPLE__) || defined(__unix__)
+//
+//		// Resolve absolute path to file
+//		char fullpath[2048];
+//		if ( realpath( s.c_str(), fullpath ) != NULL )
+//		{
+//			printf("Fullpath: '%s'\n", fullpath );
+//			s.assign( fullpath );
+//		}
+//#endif
+		FCEU_WRAPPER_LOCK();
+		FCEU_LoadLuaCode(s.c_str());
+		FCEU_WRAPPER_UNLOCK();
+	}
+#endif
 
 	retval = app.exec();
 
