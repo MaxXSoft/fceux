@@ -691,6 +691,14 @@ static int emu_exit(lua_State *L) {
 	return 0;
 }
 
+// emu.terminate()
+//
+// Teriminate the fceux
+static int emu_terminate(lua_State *L) {
+	std::exit((int)luaL_checkinteger(L, 1));
+	return 0;
+}
+
 static int emu_registerbefore(lua_State *L) {
 	if (!lua_isnil(L,1))
 		luaL_checktype(L, 1, LUA_TFUNCTION);
@@ -6064,6 +6072,7 @@ static const struct luaL_reg emulib [] = {
 	{"loadrom", emu_loadrom},
 	{"print", print}, // sure, why not
 	{"exit", emu_exit}, // useful for run-and-close scripts
+	{"terminate", emu_terminate},
 	{NULL,NULL}
 };
 
