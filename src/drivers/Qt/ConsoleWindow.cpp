@@ -161,6 +161,10 @@ consoleWin_t::consoleWin_t(QWidget *parent)
 	g_config->getOption( "SDL.Sound.UseGlobalFocus", &soundUseGlobalFocus );
 	g_config->getOption ("SDL.VideoDriver", &videoDriver);
 
+	int noframe = 0;
+	g_config->getOption("SDL.NoFrame", &noframe);
+	menubar->setVisible( !noframe );
+
 	loadVideoDriver( videoDriver );
 
 	setWindowTitle( tr(FCEU_NAME_AND_VERSION) );

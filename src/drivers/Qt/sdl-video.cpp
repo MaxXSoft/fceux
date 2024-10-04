@@ -59,7 +59,6 @@ static int s_inited = 0;
 static int s_eefx = 0;
 static int s_clipSides = 0;
 static int s_fullscreen = 0;
-static int noframe = 0;
 static int initBlitToHighDone = 0;
 
 #define NWIDTH	(256 - (s_clipSides ? 16 : 0))
@@ -202,7 +201,6 @@ int InitVideo(FCEUGI *gi)
 	g_config->getOption("SDL.XStretch", &xstretch);
 	g_config->getOption("SDL.YStretch", &ystretch);
 	g_config->getOption("SDL.ClipSides", &s_clipSides);
-	g_config->getOption("SDL.NoFrame", &noframe);
 	g_config->getOption("SDL.ShowFPS", &show_fps);
 	g_config->getOption("SDL.ShowFrameCount", &frame_display);
 	g_config->getOption("SDL.ShowLagCount", &lagCounterDisplay);
