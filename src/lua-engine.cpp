@@ -4120,10 +4120,9 @@ static int gui_savescreenshotas(lua_State *L) {
 	name = luaL_checklstring(L,1,&l);
 	lua_pushstring(L, name);
 	if (name)
-		FCEUI_SetSnapshotAsName(name);
+		SaveSnapshot(name);
 	else
 		luaL_error(L,"gui.savesnapshotas must have a string parameter");
-	FCEUI_SaveSnapshotAs();
 	return 1;
 }
 
